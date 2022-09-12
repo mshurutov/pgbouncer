@@ -1,12 +1,12 @@
-Role Name
+pgbouncer ansible role
 =========
 
-A brief description of the role goes here.
+This is not independent role but pgbouncer is used not only postgres hosts. It is used on same hosts with haproxy or isolated host(s).
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role is independent.
 
 Role Variables
 --------------
@@ -16,7 +16,7 @@ A description of the settable variables for this role should go here, including 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role is used with postgres role.
 
 Example Playbook
 ----------------
@@ -30,7 +30,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+GPLv2
 
 Author Information
 ------------------
