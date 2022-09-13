@@ -1,2 +1,29 @@
 ---
+
 # tasks file for pgbouncer
+- name: install postgres
+  ansible.builtin.import_tasks: "{{ ansible_pkg_mgr }}-pg_bouncer-install.yml"
+  notify:
+    - pgbouncer enable
+    - pgbouncer start
+  tags: pgbouncer_install
+
+- name: add databases into pgbouncer
+  ansible.builtin.blockinfile:
+    path: /etc/pgbouncer/pgbouncer.ini
+    insertafter: '[databases]'
+    block: |
+      {% for db in pgbouncer_databases %}
+      {{ db.name }} = {{ db.connstring }}
+      {% endfor %}
+  tags: pgbouncer_config
+
+- name: set pgbouncer parameters
+  ansible.builtin.lineinfile:
+    path: /etc/pgbouncer/pgbouncer.ini
+    regexp: '^;?{{ item.name }}'
+    line: '{{ item.name }} = {{ item.value }}'
+  loop: "{{ pgbouncer_params }}"
+  notify: pgbouncer reload
+  tags: pgbouncer_config
+
