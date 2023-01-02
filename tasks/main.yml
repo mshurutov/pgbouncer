@@ -3,9 +3,6 @@
 # tasks file for pgbouncer
 - name: install postgres
   ansible.builtin.include_tasks: "{{ ansible_pkg_mgr }}-pg_bouncer-install.yml"
-  notify:
-    - pgbouncer enable
-    - pgbouncer start
   tags: pgbouncer_install
 
 - name: add databases into pgbouncer
