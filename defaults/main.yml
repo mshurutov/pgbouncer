@@ -1,2 +1,13 @@
 ---
 # defaults file for pgbouncer
+pgbouncer_files_dir: "{{ role_path }}/files"
+pgbouncer_templates_dir: "{{ role_path }}/templates"
+pgbouncer_vars_dir: "{{ role_path }}/vars"
+pgbouncer_config_dir: "/etc/pgbouncer"
+pgbouncer_config_file: "{{ pgbouncer_config_dir }}/pgbouncer.ini"
+pgbouncer_user_file: "{{ pgbouncer_config_dir }}/userlist.txt"
+pgbouncer_params_default:
+  - name: "pool_mode"
+    value: "transaction"
+  - name: "auth_file"
+    value: "{{ pgbouncer_user_file }}"

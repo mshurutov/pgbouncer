@@ -1,26 +1,40 @@
 ---
 
 # tasks file for pgbouncer
-- name: install postgres
-  ansible.builtin.include_tasks: "{{ ansible_pkg_mgr }}-pg_bouncer-install.yml"
+- name: set pgbouncer parameters
+  ansible.builtin.set_fact:
+    pgbouncer_params: "{{ [pgbouncer_params_default, pgbouncer_params_group_all | default([]), pgbouncer_params_group | default([]), pgbouncer_params_local | default([])] | community.general.lists_mergeby('name',list_merge='append_rp') }}"
+  tags: pgbouncer_install,pgbouncer_config
+
+- name: install pgbouncer
+  ansible.builtin.include_tasks: "{{ ansible_pkg_mgr }}.yml"
   tags: pgbouncer_install
 
 - name: add databases into pgbouncer
   ansible.builtin.blockinfile:
-    path: /etc/pgbouncer/pgbouncer.ini
-    insertafter: '[databases]'
+    path: "{{ pgbouncer_config_file }}"
+    insertafter: '^\[databases\]'
     block: |
       {% for db in pgbouncer_databases %}
       {{ db.name }} = {{ db.connstring }}
       {% endfor %}
+  notify: pgbouncer restart
   tags: pgbouncer_config
 
 - name: set pgbouncer parameters
   ansible.builtin.lineinfile:
-    path: /etc/pgbouncer/pgbouncer.ini
+    path: "{{ pgbouncer_config_file }}"
     regexp: '^;?{{ item.name }}'
     line: '{{ item.name }} = {{ item.value }}'
   loop: "{{ pgbouncer_params }}"
-  notify: pgbouncer reload
+  notify: pgbouncer restart
+  tags: pgbouncer_config
+
+- name: set user list
+  ansible.builtin.lineinfile:
+    path: "{{ pgbouncer_user_file }}"
+    line: '"{{ item.name }}" "{{ item.value }}"'
+  loop: "{{ pgbouncer_users }}"
+  notify: pgbouncer restart
   tags: pgbouncer_config
 
