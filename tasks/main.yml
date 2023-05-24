@@ -7,7 +7,9 @@
   tags: pgbouncer_install,pgbouncer_config
 
 - name: install pgbouncer
-  ansible.builtin.include_tasks: "{{ ansible_pkg_mgr }}.yml"
+  ansible.builtin.package:
+    name: pgbouncer
+    state: present
   tags: pgbouncer_install
 
 - name: add databases into pgbouncer

@@ -3,7 +3,4 @@
 # install pgbouncer by apt
 - name: install pgbouncer by apt
   ansible.builtin.apt:
-    name: pgbouncer
-    state: present
-  tags: pgbouncer_install
 
