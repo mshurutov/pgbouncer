@@ -1,6 +1,0 @@
----
-
-# install pgbouncer by apt
-- name: install pgbouncer by apt
-  ansible.builtin.apt:
-
