@@ -39,4 +39,3 @@
   loop: "{{ pgbouncer_users }}"
   notify: pgbouncer restart
   tags: pgbouncer_config
-

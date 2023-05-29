@@ -2,6 +2,7 @@ pgbouncer ansible role
 =========
 
 This is not independent role but pgbouncer is used not only postgres hosts. It is used on same hosts with haproxy or isolated host(s).
+
 Copyright (C) 2023  Mikhail Shurutov
 
 This program is free software; you can redistribute it and/or
