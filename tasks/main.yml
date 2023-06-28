@@ -4,13 +4,13 @@
 - name: set pgbouncer parameters
   ansible.builtin.set_fact:
     pgbouncer_params: "{{ [pgbouncer_params_default, pgbouncer_params_group_all | default([]), pgbouncer_params_group | default([]), pgbouncer_params_host | default([])] | community.general.lists_mergeby('name',list_merge='append_rp') }}"
-  tags: pgbouncer_install,pgbouncer_config
+  tags: pgbouncer,pgbouncer_install,pgbouncer_config
 
 - name: install pgbouncer
   ansible.builtin.package:
     name: pgbouncer
     state: present
-  tags: pgbouncer_install
+  tags: pgbouncer,pgbouncer_install
 
 - name: add databases into pgbouncer
   ansible.builtin.blockinfile:
@@ -21,7 +21,7 @@
       {{ db.name }} = {{ db.connstring }}
       {% endfor %}
   notify: pgbouncer restart
-  tags: pgbouncer_config
+  tags: pgbouncer,pgbouncer_config
 
 - name: set pgbouncer parameters
   ansible.builtin.lineinfile:
@@ -30,7 +30,7 @@
     line: '{{ item.name }} = {{ item.value }}'
   loop: "{{ pgbouncer_params }}"
   notify: pgbouncer restart
-  tags: pgbouncer_config
+  tags: pgbouncer,pgbouncer_config
 
 - name: set user list
   ansible.builtin.lineinfile:
@@ -38,4 +38,4 @@
     line: '"{{ item.name }}" "{{ item.value }}"'
   loop: "{{ pgbouncer_users }}"
   notify: pgbouncer restart
-  tags: pgbouncer_config,pgbouncer_user
+  tags: pgbouncer,pgbouncer_config,pgbouncer_user

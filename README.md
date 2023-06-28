@@ -105,6 +105,34 @@ roles_path    = /data/ansible/roles
          - role: mshurutov.pgbouncer
     ...
 
+### Deploying pgbouncer using this role
+
+This example uses playbook.yml to deploy pgbouncer. Inventory file is defined in ansible configuretion.
+
+#### Tags
+
+* `pgbouncer` is used for full deploy;
+* `pgbouncer_install` is used for install pgbouncer;
+* `pgbouncer_config` is used for configuration pgbouncer.
+
+#### Full deploy
+
+```
+user@host ~ $ ansible-playbook playbook.yml -t pgbouncer [-l pgbouncer_group]
+```
+
+#### install pgbouncer 
+
+```
+user@host ~ $ ansible-playbook playbook.yml -t pgbouncer_install [-l pgbouncer_group]
+```
+
+#### configuration pgbouncer
+
+```
+user@host ~ $ ansible-playbook playbook.yml -t pgbouncer_config [-l pgbouncer_group]
+```
+
 License
 -------
 
