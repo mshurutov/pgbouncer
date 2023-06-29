@@ -107,7 +107,7 @@ roles_path    = /data/ansible/roles
 
 ### Deploying pgbouncer using this role
 
-This example uses playbook.yml to deploy pgbouncer. Inventory file is defined in ansible configuretion.
+This example uses playbook.yml to deploy pgbouncer. Inventory file is defined in ansible configuration.
 
 #### Tags
 
@@ -141,4 +141,4 @@ License
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+My name is Mikhail Shurutov, I'm an operations engineer since 1997.
