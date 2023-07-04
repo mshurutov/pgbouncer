@@ -127,7 +127,7 @@ user@host ~ $ ansible-playbook playbook.yml -t pgbouncer [-l pgbouncer_group]
 user@host ~ $ ansible-playbook playbook.yml -t pgbouncer_install [-l pgbouncer_group]
 ```
 
-#### configuration pgbouncer
+#### configure pgbouncer
 
 ```
 user@host ~ $ ansible-playbook playbook.yml -t pgbouncer_config [-l pgbouncer_group]
