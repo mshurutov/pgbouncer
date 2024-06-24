@@ -1,9 +1,9 @@
 ---
 
 # tasks file for pgbouncer
-- name: set pgbouncer parameters
-  ansible.builtin.set_fact:
-    pgbouncer_params: "{{ [pgbouncer_params_default, pgbouncer_params_group_all | default([]), pgbouncer_params_group | default([]), pgbouncer_params_host | default([])] | community.general.lists_mergeby('name',list_merge='append_rp') }}"
+- name: set distro independed variables
+  ansible.builtin.include_vars:
+    file: "{{ pgbouncer_vars_dir }}/main.yml"
   tags: pgbouncer,pgbouncer_install,pgbouncer_config
 
 - name: install pgbouncer
@@ -26,7 +26,7 @@
 - name: set pgbouncer parameters
   ansible.builtin.lineinfile:
     path: "{{ pgbouncer_config_file }}"
-    regexp: '^;?{{ item.name }}'
+    regexp: '^;?\s*{{ item.name }}'
     line: '{{ item.name }} = {{ item.value }}'
   loop: "{{ pgbouncer_params }}"
   notify: pgbouncer restart
