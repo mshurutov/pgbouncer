@@ -6,8 +6,29 @@ pgbouncer_vars_dir: "{{ role_path }}/vars"
 pgbouncer_config_dir: "/etc/pgbouncer"
 pgbouncer_config_file: "{{ pgbouncer_config_dir }}/pgbouncer.ini"
 pgbouncer_user_file: "{{ pgbouncer_config_dir }}/userlist.txt"
-pgbouncer_params_default:
-  - name: "pool_mode"
-    value: "transaction"
-  - name: "auth_file"
-    value: "{{ pgbouncer_user_file }}"
+pgbouncer_listen_port: "5432"
+pgbouncer_config_params_default: []
+#- name: "databases"
+#  comment: |
+#    ; Database settings
+#  params:
+#  - name: "*"
+#    value: "host=localhost"
+#- name: "pgbouncer"
+#  comment: |
+#    ; Global pgbouncer settings
+#  params:
+#  - name: "pool_mode"
+#    value: "transaction"
+#  - name: "auth_file"
+#    value: "{{ pgbouncer_user_file }}"
+#  - name: "listen_port"
+#    value: "{{ pgbouncer_listen_port }}"
+#  - name: "logfile"
+#    value: "/var/log/postgresql/pgbouncer.log"
+#  - name: "pidfile"
+#    value: "/run/pgbouncer/pgbouncer.pid"
+#  - name: "admin_users"
+#    value: "pgbadmin"
+#  - name: "stats_users"
+#    value: "pgbreader"

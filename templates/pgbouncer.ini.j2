@@ -1,0 +1,16 @@
+;; {{ pgbouncer_config_file }} is pgbouncer configuration file
+; this file is managed by ansible
+; you should not edit it manually!
+{% for section in pgbouncer_config_params %}
+
+[{{ section.name }}]
+{% if defined section.comment %}
+{{ section.comment }}
+{% endif %}
+{% for param in section.params %}
+{% if defined param.comment %}
+{{ param.comment }}
+{% endif %}
+{{ param.name }} = {{ param.value }}
+{% endfor %}
+{% endfor %}
