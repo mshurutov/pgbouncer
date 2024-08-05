@@ -1,7 +1,11 @@
 ---
-
 # handlers file for pgbouncer
 - name: pgbouncer restart
   ansible.builtin.service:
     name: pgbouncer
     state: restarted
+
+- name: pgbouncer reload
+  ansible.builtin.service:
+    name: pgbouncer
+    state: reloaded
