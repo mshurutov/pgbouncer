@@ -4,11 +4,11 @@
 {% for section in pgbouncer_config_params %}
 
 [{{ section.name }}]
-{% if defined section.comment %}
+{% if section.comment is defined %}
 {{ section.comment }}
 {% endif %}
 {% for param in section.params %}
-{% if defined param.comment %}
+{% if param.comment is defined %}
 {{ param.comment }}
 {% endif %}
 {{ param.name }} = {{ param.value }}
