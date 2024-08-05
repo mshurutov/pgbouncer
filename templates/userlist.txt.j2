@@ -1,0 +1,5 @@
+# file {{ pgbouncer_user_file }} is managed by ansible
+# do not edit it manually!
+{% for pgbuser in pgbouncer_users %}
+"{{ pgbuser.name }}" "{{ pgbuser.password }}"
+{% endfor %}

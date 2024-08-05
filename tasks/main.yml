@@ -12,30 +12,26 @@
     state: present
   tags: pgbouncer,pgbouncer_install
 
-- name: add databases into pgbouncer
-  ansible.builtin.blockinfile:
-    path: "{{ pgbouncer_config_file }}"
-    insertafter: '^\[databases\]'
-    block: |
-      {% for db in pgbouncer_databases %}
-      {{ db.name }} = {{ db.connstring }}
-      {% endfor %}
-  notify: pgbouncer restart
+- name: configure pgbouncer
+  ansible.builtin.template:
+    dest: "{{ pgbouncer_config_file }}"
+    src: "{{ pgbouncer_templates_dir }}/pgbouncer.ini.j2"
+  notify: pgbouncer reload
   tags: pgbouncer,pgbouncer_config
 
-- name: set pgbouncer parameters
-  ansible.builtin.lineinfile:
-    path: "{{ pgbouncer_config_file }}"
-    regexp: '^;?\s*{{ item.name }}'
-    line: '{{ item.name }} = {{ item.value }}'
-  loop: "{{ pgbouncer_params }}"
-  notify: pgbouncer restart
-  tags: pgbouncer,pgbouncer_config
+- name: set HBA if it is defined
+  ansible.builtin.template:
+    dest: "{{ pgbouncer_auth_hba_file }}"
+    src: "{{ pgbouncer_templates_dir }}/pg_hba.conf.j2"
+  when: pgbouncer_auth_hba_file is defined and pgbouncer_auth_hba_file | length > 0
+  notify: pgbouncer reload
+  tags: pgbouncer,pgbouncer_auth_hba
 
 - name: set user list
-  ansible.builtin.lineinfile:
-    path: "{{ pgbouncer_user_file }}"
-    line: '"{{ item.name }}" "{{ item.value }}"'
-  loop: "{{ pgbouncer_users }}"
-  notify: pgbouncer restart
-  tags: pgbouncer,pgbouncer_config,pgbouncer_user
+  ansible.builtin.template:
+    dest: "{{ pgbouncer_user_file }}"
+    src: "{{ pgbouncer_templates_dir }}/userlist.txt.j2"
+  notify: pgbouncer reload
+  tags: pgbouncer,pgbouncer_user
+
+  
