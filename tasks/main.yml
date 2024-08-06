@@ -28,7 +28,7 @@
     owner: "{{ pgbouncer_system_user }}"
     group: "{{ pgbouncer_system_group }}"
     mode: '0640'
-  notify: pgbouncer reload
+  notify: pgbouncer restart
   tags: pgbouncer,pgbouncer_config
 
 - name: set HBA if it is defined
@@ -39,7 +39,7 @@
     group: "{{ pgbouncer_system_group }}"
     mode: '0640'
   when: pgbouncer_auth_hba_file is defined and pgbouncer_auth_hba_file | length > 0
-  notify: pgbouncer reload
+  notify: pgbouncer restart
   tags: pgbouncer,pgbouncer_auth_hba
 
 - name: set user list
@@ -49,7 +49,7 @@
     owner: "{{ pgbouncer_system_user }}"
     group: "{{ pgbouncer_system_group }}"
     mode: '0600'
-  notify: pgbouncer reload
+  notify: pgbouncer restart
   tags: pgbouncer,pgbouncer_user
 
   
