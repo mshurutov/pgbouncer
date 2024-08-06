@@ -12,10 +12,22 @@
     state: present
   tags: pgbouncer,pgbouncer_install
 
+- name: check if config dir exists
+  ansible.builtin.file:
+    path: "{{ pgbouncer_config_dir }}"
+    state: "directory"
+    owner: "{{ pgbouncer_system_user }}"
+    group: "{{ pgbouncer_system_group }}"
+    mode: '0750'
+  tags: pgbouncer,pgbouncer_config
+
 - name: configure pgbouncer
   ansible.builtin.template:
     dest: "{{ pgbouncer_config_file }}"
     src: "{{ pgbouncer_templates_dir }}/pgbouncer.ini.j2"
+    owner: "{{ pgbouncer_system_user }}"
+    group: "{{ pgbouncer_system_group }}"
+    mode: '0640'
   notify: pgbouncer reload
   tags: pgbouncer,pgbouncer_config
 
@@ -23,6 +35,9 @@
   ansible.builtin.template:
     dest: "{{ pgbouncer_auth_hba_file }}"
     src: "{{ pgbouncer_templates_dir }}/pg_hba.conf.j2"
+    owner: "{{ pgbouncer_system_user }}"
+    group: "{{ pgbouncer_system_group }}"
+    mode: '0640'
   when: pgbouncer_auth_hba_file is defined and pgbouncer_auth_hba_file | length > 0
   notify: pgbouncer reload
   tags: pgbouncer,pgbouncer_auth_hba
@@ -31,6 +46,9 @@
   ansible.builtin.template:
     dest: "{{ pgbouncer_user_file }}"
     src: "{{ pgbouncer_templates_dir }}/userlist.txt.j2"
+    owner: "{{ pgbouncer_system_user }}"
+    group: "{{ pgbouncer_system_group }}"
+    mode: '0600'
   notify: pgbouncer reload
   tags: pgbouncer,pgbouncer_user
 

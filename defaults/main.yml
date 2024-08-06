@@ -8,6 +8,8 @@ pgbouncer_config_file: "{{ pgbouncer_config_dir }}/pgbouncer.ini"
 pgbouncer_user_file: "{{ pgbouncer_config_dir }}/userlist.txt"
 #pgbouncer_auth_hba_file: "{{ pgbouncer_config_dir }}/pg_hba.conf"
 pgbouncer_listen_port: "5432"
+pgbouncer_system_user: "pgbouncer"
+pgbouncer_system_group: "{{ pgbouncer_system_user }}"
 pgbouncer_config_params_default: []
 #- name: "databases"
 #  comment: |
