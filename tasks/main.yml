@@ -1,18 +1,27 @@
 ---
+- name: Check if ansible version is equal or greater than 2.11
+  ansible.builtin.fail:
+    msg: "Ansible core should be equal or greater than 2.11"
+  when: ansible_version.full is ansible.builtin.version('2.11','<')
+
+- name: Check if python is equal or greater than 3
+  ansible.builtin.fail:
+    msg: "Python should be equal or greater than 3"
+  when: ansible_python.version.major is ansible.builtin.version('3','<')
 
 # tasks file for pgbouncer
-- name: set distro independed variables
+- name: Set distro independed variables
   ansible.builtin.include_vars:
     file: "{{ pgbouncer_vars_dir }}/main.yml"
   tags: pgbouncer,pgbouncer_install,pgbouncer_config
 
-- name: install pgbouncer
+- name: Install pgbouncer
   ansible.builtin.package:
     name: pgbouncer
     state: present
   tags: pgbouncer,pgbouncer_install
 
-- name: check if config dir exists
+- name: Check if config dir exists
   ansible.builtin.file:
     path: "{{ pgbouncer_config_dir }}"
     state: "directory"
@@ -21,7 +30,7 @@
     mode: '0750'
   tags: pgbouncer,pgbouncer_config
 
-- name: configure pgbouncer
+- name: Configure pgbouncer
   ansible.builtin.template:
     dest: "{{ pgbouncer_config_file }}"
     src: "{{ pgbouncer_templates_dir }}/pgbouncer.ini.j2"
@@ -31,7 +40,7 @@
   notify: pgbouncer restart
   tags: pgbouncer,pgbouncer_config
 
-- name: set HBA if it is defined
+- name: Set HBA if it is defined
   ansible.builtin.template:
     dest: "{{ pgbouncer_auth_hba_file }}"
     src: "{{ pgbouncer_templates_dir }}/pg_hba.conf.j2"
@@ -42,7 +51,7 @@
   notify: pgbouncer restart
   tags: pgbouncer,pgbouncer_auth_hba
 
-- name: set user list
+- name: Set user list
   ansible.builtin.template:
     dest: "{{ pgbouncer_user_file }}"
     src: "{{ pgbouncer_templates_dir }}/userlist.txt.j2"
@@ -51,5 +60,3 @@
     mode: '0600'
   notify: pgbouncer restart
   tags: pgbouncer,pgbouncer_user
-
-  
