@@ -16,14 +16,14 @@
   tags: pgbouncer,pgbouncer_install,pgbouncer_config
 
 # Update cache for APT and APT+RPM package managers
-- name: update cache for apt PM
+- name: Update cache for apt PM
   become: true
   become_user: root
   when: ansible_pkg_mgr == "apt"
   tags: pgbouncer,pgbouncer_install
   ansible.builtin.apt:
     update_cache: true
-- name: update cache for apt+rpm PM
+- name: Update cache for apt+rpm PM
   become: true
   become_user: root
   when: ansible_pkg_mgr == "apt_rpm"
@@ -35,9 +35,17 @@
   become: true
   become_user: root
   tags: pgbouncer,pgbouncer_install
-  ansible.builtin.package:
-    name: pgbouncer
-    state: present
+  block:
+  - name: Install packages on non Alt Linux system
+    when: ansible_pkg_mgr != "apt_rpm"
+    ansible.builtin.package:
+      name: pgbouncer
+      state: "present"
+  - name: Install packages on Alt Linux system
+    when: ansible_pkg_mgr == "apt_rpm"
+    ansible.builtin.package:
+      name: pgbouncer
+      state: "present_not_latest"
 
 - name: Check if config dir exists
   become: true
